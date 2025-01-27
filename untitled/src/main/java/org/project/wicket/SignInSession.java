@@ -6,13 +6,14 @@ import org.apache.wicket.injection.Injector;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.project.repository.UserDao;
+import org.project.repository.UserDaoInterface;
 import org.project.repository.UserModel;
 
 public final class SignInSession extends AuthenticatedWebSession
 {
 
     @SpringBean
-    private UserDao userDao;
+    private UserDaoInterface userDao;
 
     private UserModel user;
 
@@ -26,7 +27,7 @@ public final class SignInSession extends AuthenticatedWebSession
     public final boolean authenticate(final String username, final String password)
     {
         user = userDao.getUserByName(username);
-        return password.equals(user.getPassword());
+        return user != null && user.getPassword().equals(password);
     }
 
     public UserModel getUser()
