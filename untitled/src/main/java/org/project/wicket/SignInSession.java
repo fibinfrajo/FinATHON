@@ -2,6 +2,7 @@ package org.project.wicket;
 
 import org.apache.wicket.authroles.authentication.AuthenticatedWebSession;
 import org.apache.wicket.authroles.authorization.strategies.role.Roles;
+import org.apache.wicket.injection.Injector;
 import org.apache.wicket.request.Request;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.project.repository.UserDao;
@@ -17,6 +18,7 @@ public final class SignInSession extends AuthenticatedWebSession
 
      protected SignInSession(Request request) {
         super(request);
+        Injector.get().inject(this);
      }
 
     //return True if the user was

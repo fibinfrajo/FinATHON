@@ -5,12 +5,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Component;
 
 import java.sql.*;
 
-@Component
-public class UserDao implements UserDaoInterface {
+public class UserDao  {
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -18,7 +16,7 @@ public class UserDao implements UserDaoInterface {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    @Override
+
     public int saveUser(UserModel user) {
         String sql = "INSERT INTO user (name, password) VALUES (?, ?)";
 
@@ -38,7 +36,7 @@ public class UserDao implements UserDaoInterface {
         return generatedId;
     }
 
-    @Override
+
     public UserModel getUserByName(String name) {
         String sql = "SELECT * FROM user WHERE Name = ?";
         return jdbcTemplate.queryForObject(sql, new UserRowMapper(), name);

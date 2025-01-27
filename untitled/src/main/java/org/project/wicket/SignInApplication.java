@@ -41,6 +41,9 @@ public final class SignInApplication extends WebApplication
 
         // Initialize Spring context
         springContext = new AnnotationConfigApplicationContext(SpringJdbcConfig.class);
+        logger.info("Spring JDBC config loaded");
+        logger.info("dataSource bean is {}", springContext.getBean("dataSource").getClass());
+        logger.info("userDao bean is {}", springContext.getBean("userDao").getClass());
 
         // Enable Spring dependency injection in Wicket components
         getComponentInstantiationListeners().add(new SpringComponentInjector(this));
