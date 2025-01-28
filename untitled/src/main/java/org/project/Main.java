@@ -7,6 +7,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 public class Main {
 
+    //Used for checking DB-connection
     public static void main(String[] args) {
 
         System.out.println("Hello, World!");
@@ -14,11 +15,8 @@ public class Main {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringJdbcConfig.class);
         UserDao userDao = context.getBean(UserDao.class);
 
-        // Insert employee
         UserModel user = new UserModel("Alice Johnson", "85000");
-        System.out.println("User Updated!");
 
-        // Retrieve employee
         UserModel user1 = userDao.getUserByName(user.getName());
         System.out.println("user Retrieved, password: " + user1.getPassword());
 

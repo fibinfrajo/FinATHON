@@ -1,8 +1,9 @@
 package org.project.repository;
 
 
+import org.springframework.stereotype.Service;
 
-
+@Service
 public class UserModel {
 
     public UserModel() {

@@ -5,10 +5,9 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
-import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.model.LambdaModel;
 import org.apache.wicket.spring.injection.annot.SpringBean;
-import org.apache.wicket.util.value.ValueMap;
-import org.project.repository.UserDao;
+import org.project.repository.UserModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,16 +16,14 @@ public final class SignIn extends WebPage
 
     private static final Logger logger = LoggerFactory.getLogger(SignIn.class);
 
-    /**
-     * Constructor
-     */
+    @SpringBean
+    private UserModel user;
+
     public SignIn()
     {
-        // Create feedback panel and add to page
         add(new FeedbackPanel("feedback"));
 
-        // Add sign-in form to page
-        add(new SignInForm("signInForm"));
+        add(new SignInForm("signInForm", user));
     }
 
     public static final class SignInForm extends Form<Void>
@@ -34,60 +31,36 @@ public final class SignIn extends WebPage
         private static final String USERNAME = "username";
         private static final String PASSWORD = "password";
 
+        private UserModel user;
 
-        // El-cheapo model for form
-        private final ValueMap properties = new ValueMap();
-
-        /**
-         * Constructor
-         *
-         * @param id
-         *            id of the form component
-         */
-        public SignInForm(final String id)
+        //id of the form component
+        public SignInForm(final String id,  UserModel user)
         {
             super(id);
-
-            // Attach textfield components that edit properties map model
-            add(new TextField<>(USERNAME, new PropertyModel<String>(properties, USERNAME)));
-            add(new PasswordTextField(PASSWORD, new PropertyModel<>(properties, PASSWORD)));
+            this.user = user;
+            add(new TextField<>(USERNAME, LambdaModel.of(user::getName, user::setName)));
+            add(new PasswordTextField(PASSWORD, LambdaModel.of(user::getPassword, user::setPassword)));
         }
 
         @Override
         public final void onSubmit()
         {
 
-            // Get session info
             SignInSession session = getMySession();
 
-            // Sign the user in
-            if (session.signIn(getUsername(), getPassword()))
+            if (session.signIn(user.getName(), user.getPassword()))
             {
                 continueToOriginalDestination();
                 setResponsePage(getApplication().getHomePage());
             }
             else
             {
-                // Get the error message from the properties file associated with the Component
                 String errmsg = getString("loginError", null, "Unable to sign you in");
-
-                // Register the error message with the feedback panel
                 error(errmsg);
             }
         }
-        private String getPassword()
-        {
-            return properties.getString(PASSWORD);
-        }
 
-        private String getUsername()
-        {
-            return properties.getString(USERNAME);
-        }
 
-        private SignInSession getMySession()
-        {
-            return (SignInSession)getSession();
-        }
+        private SignInSession getMySession() { return (SignInSession)getSession();}
     }
 }
