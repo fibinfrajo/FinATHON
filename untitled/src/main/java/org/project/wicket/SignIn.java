@@ -6,6 +6,7 @@ import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.LambdaModel;
+import org.apache.wicket.model.Model;
 import org.project.repository.UserModel;
 
 public final class SignIn extends WebPage
@@ -14,9 +15,7 @@ public final class SignIn extends WebPage
     public SignIn()
     {
         add(new FeedbackPanel("feedback"));
-
-        UserModel user = new UserModel();
-        add(new SignInForm("signInForm", user));
+        add(new SignInForm("signInForm"));
     }
 
     public static final class SignInForm extends Form<Void>
@@ -24,15 +23,14 @@ public final class SignIn extends WebPage
         private static final String USERNAME = "username";
         private static final String PASSWORD = "password";
 
-        private final UserModel user;
-
+        Model<String> nameModel = Model.of("");
+        Model<String> passwordModel = Model.of("");
         //id of the form component
-        public SignInForm(final String id,  UserModel user)
+        public SignInForm(final String id)
         {
             super(id);
-            this.user = user;
-            add(new TextField<>(USERNAME, LambdaModel.of(user::getName, user::setName)));
-            add(new PasswordTextField(PASSWORD, LambdaModel.of(user::getPassword, user::setPassword)));
+            add(new TextField<>(USERNAME, nameModel));
+            add(new PasswordTextField(PASSWORD, passwordModel));
         }
 
         @Override
@@ -40,7 +38,7 @@ public final class SignIn extends WebPage
         {
 
             SignInSession session = getMySession();
-            if (session.signIn(user.getName(), user.getPassword()))
+            if (session.signIn(nameModel.getObject(), passwordModel.getObject()))
             {
                 continueToOriginalDestination();
                 setResponsePage(getApplication().getHomePage());
