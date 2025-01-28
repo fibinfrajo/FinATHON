@@ -2,12 +2,13 @@ package org.project.config;
 
 
 import org.project.repository.UserDao;
-import org.project.repository.UserDaoInterface;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.sql.DataSource;
 
@@ -18,6 +19,11 @@ public class SpringJdbcConfig {
     @Bean
     public UserDao userDao(JdbcTemplate jdbcTemplate) {
         return new UserDao(jdbcTemplate);
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(); // Use BCrypt for hashing
     }
 
     @Bean

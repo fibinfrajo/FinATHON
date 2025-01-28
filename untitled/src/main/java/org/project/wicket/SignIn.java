@@ -10,6 +10,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.project.repository.UserModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 public final class SignIn extends WebPage
 {
@@ -47,7 +48,6 @@ public final class SignIn extends WebPage
         {
 
             SignInSession session = getMySession();
-
             if (session.signIn(user.getName(), user.getPassword()))
             {
                 continueToOriginalDestination();

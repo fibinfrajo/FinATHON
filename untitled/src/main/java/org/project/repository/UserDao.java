@@ -10,6 +10,8 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import java.sql.*;
+import java.util.List;
+import java.util.Map;
 
 public class UserDao implements UserDaoInterface {
 
@@ -42,12 +44,12 @@ public class UserDao implements UserDaoInterface {
     }
 
     @Override
-    public UserModel getUserByName(String name) {
+    public String getPasswordByName(String name) {
 
-        UserModel user = null;
+        String password = null;
         try {
-            String sql = "SELECT * FROM user WHERE Name = ?";
-            user=  jdbcTemplate.queryForObject(sql, new UserRowMapper(), name);
+            String sql = "SELECT password FROM user WHERE Name = ?";
+            password =  jdbcTemplate.queryForObject(sql, String.class, name);
         }
         catch (EmptyResultDataAccessException e) {
             if (logger.isDebugEnabled()) {
@@ -55,20 +57,7 @@ public class UserDao implements UserDaoInterface {
             }
         }
 
-        return user;
-    }
-
-
-    // RowMapper to map result set to Employee object
-    private static class UserRowMapper implements RowMapper<UserModel> {
-        @Override
-        public UserModel mapRow(ResultSet rs, int rowNum) throws SQLException {
-            UserModel user = new UserModel();
-            user.setId(rs.getInt("id"));
-            user.setName(rs.getString("name"));
-            user.setPassword(rs.getString("password"));
-            return user;
-        }
+        return password;
     }
 
 }

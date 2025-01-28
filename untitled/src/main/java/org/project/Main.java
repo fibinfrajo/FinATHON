@@ -17,8 +17,8 @@ public class Main {
 
         UserModel user = new UserModel("Alice Johnson", "85000");
 
-        UserModel user1 = userDao.getUserByName(user.getName());
-        System.out.println("user Retrieved, password: " + user1.getPassword());
+//        UserModel user1 = userDao.getUserByName(user.getName());
+//        System.out.println("user Retrieved, password: " + user1.getPassword());
 
 
         context.close();
