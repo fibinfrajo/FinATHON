@@ -6,24 +6,16 @@ import org.apache.wicket.markup.html.form.PasswordTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.LambdaModel;
-import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.project.repository.UserModel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 public final class SignIn extends WebPage
 {
-
-    private static final Logger logger = LoggerFactory.getLogger(SignIn.class);
-
-    @SpringBean
-    private UserModel user;
 
     public SignIn()
     {
         add(new FeedbackPanel("feedback"));
 
+        UserModel user = new UserModel();
         add(new SignInForm("signInForm", user));
     }
 
@@ -32,7 +24,7 @@ public final class SignIn extends WebPage
         private static final String USERNAME = "username";
         private static final String PASSWORD = "password";
 
-        private UserModel user;
+        private final UserModel user;
 
         //id of the form component
         public SignInForm(final String id,  UserModel user)

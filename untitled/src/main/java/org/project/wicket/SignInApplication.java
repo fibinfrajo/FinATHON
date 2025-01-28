@@ -9,17 +9,9 @@ import org.apache.wicket.request.Request;
 import org.apache.wicket.request.Response;
 import org.apache.wicket.request.component.IRequestableComponent;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
-import org.project.config.SpringJdbcConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public final class SignInApplication extends WebApplication
 {
-
-    private static final Logger logger = LoggerFactory.getLogger(SignInApplication.class);
-
-    private static AnnotationConfigApplicationContext springContext;
 
     @Override
     public Class<? extends Page> getHomePage()
@@ -38,12 +30,6 @@ public final class SignInApplication extends WebApplication
     protected void init()
     {
         super.init();
-
-        // Initialize Spring context
-        springContext = new AnnotationConfigApplicationContext(SpringJdbcConfig.class);
-        logger.info("Spring JDBC config loaded");
-        logger.info("dataSource bean is {}", springContext.getBean("dataSource").getClass());
-        logger.info("userDao bean is {}", springContext.getBean("userDao").getClass());
 
         // Enable Spring dependency injection in Wicket components
         getComponentInstantiationListeners().add(new SpringComponentInjector(this));
@@ -67,7 +53,6 @@ public final class SignInApplication extends WebApplication
                     throw new RestartResponseAtInterceptPageException(SignIn.class);
                 }
 
-                // okay to proceed
                 return true;
             }
         });

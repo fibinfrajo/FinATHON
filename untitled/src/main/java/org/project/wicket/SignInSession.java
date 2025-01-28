@@ -19,18 +19,14 @@ public final class SignInSession extends AuthenticatedWebSession
     @SpringBean
     private UserDaoInterface userDao;
 
-
     @SpringBean
     private PasswordEncoder encoder;
-
-    private UserModel user;
 
      protected SignInSession(Request request) {
         super(request);
         Injector.get().inject(this);
      }
 
-    //return True if the user was
     @Override
     public final boolean authenticate(final String username, final String rawPassword)
     {
@@ -38,16 +34,6 @@ public final class SignInSession extends AuthenticatedWebSession
         String password = userDao.getPasswordByName(username);
         if (password==null) return false;
         return  encoder.matches(rawPassword, password);
-    }
-
-    public UserModel getUser()
-    {
-        return user;
-    }
-
-    public void setUser(final UserModel user)
-    {
-        this.user = user;
     }
 
     @Override
