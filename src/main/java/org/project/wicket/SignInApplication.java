@@ -2,6 +2,7 @@ package org.project.wicket;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.RestartResponseAtInterceptPageException;
+import org.apache.wicket.RuntimeConfigurationType;
 import org.apache.wicket.Session;
 import org.apache.wicket.authorization.IAuthorizationStrategy;
 import org.apache.wicket.protocol.http.WebApplication;
@@ -57,4 +58,5 @@ public final class SignInApplication extends WebApplication
             }
         });
     }
+
 }
