@@ -15,10 +15,8 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: web-app-container
-    environment:
-      db_url: jdbc:mysql://mysql:3306/my_database
-      db_user: root
-      db_password: root
+    env_file:
+      - webapp.env
     ports:
       - "8080:8080"
     depends_on:
